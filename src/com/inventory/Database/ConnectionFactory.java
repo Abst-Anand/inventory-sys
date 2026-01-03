@@ -25,7 +25,7 @@ import java.util.Properties;
 public class ConnectionFactory {
 
     static final String driver = "com.mysql.cj.jdbc.Driver";
-    static final String url = "jdbc:mysql://127.0.0.1:3306/inventory?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    static final String url = "jdbc:mysql://127.0.0.1:9000/inventory?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     static String username;
     static String password;
 

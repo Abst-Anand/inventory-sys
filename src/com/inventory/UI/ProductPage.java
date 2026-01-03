@@ -9,6 +9,9 @@ import com.inventory.DAO.ProductDAO;
 import com.inventory.DAO.SupplierDAO;
 import com.inventory.DTO.ProductDTO;
 import com.toedter.calendar.JDateChooser;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -57,14 +60,14 @@ public class ProductPage extends javax.swing.JPanel {
         addSuppButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        //jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         codeText = new javax.swing.JTextField();
         nameText = new javax.swing.JTextField();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        //jDateChooser1 = new com.toedter.calendar.JDateChooser();
         quantityText = new javax.swing.JTextField();
         costText = new javax.swing.JTextField();
         sellText = new javax.swing.JTextField();
@@ -99,7 +102,7 @@ public class ProductPage extends javax.swing.JPanel {
 
         jLabel3.setText("Product Name:");
 
-        jLabel4.setText("Date:");
+        //jLabel4.setText("Date:");
 
         jLabel5.setText("Quantity:");
 
@@ -109,7 +112,7 @@ public class ProductPage extends javax.swing.JPanel {
 
         jLabel8.setText("Brand:");
 
-        jDateChooser1.setForeground(new java.awt.Color(102, 102, 102));
+        //jDateChooser1.setForeground(new java.awt.Color(102, 102, 102));
 
         addButton.setText("Add");
         addButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -167,9 +170,10 @@ public class ProductPage extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(brandText))
                     .addGroup(entryPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        //.addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        //.addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    )
                     .addGroup(entryPanelLayout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -207,8 +211,9 @@ public class ProductPage extends javax.swing.JPanel {
                     .addComponent(nameText, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(entryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    //.addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    //.addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                )
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(entryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -316,7 +321,12 @@ public class ProductPage extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+
+
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter sqlFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         if (productTable.getSelectedRow()<0)
             JOptionPane.showMessageDialog(null, "Please select product from the table.");
         else{
@@ -327,10 +337,10 @@ public class ProductPage extends javax.swing.JPanel {
             else {
                 productDTO.setProdCode(codeText.getText());
                 productDTO.setProdName(nameText.getText());
-                productDTO.setDate(jDateChooser1.getDateFormatString());
+                productDTO.setDate(now.format(sqlFormatter));
                 productDTO.setQuantity(Integer.parseInt(quantityText.getText()));
-                productDTO.setCostPrice(Double.parseDouble(costText.getText()));
-                productDTO.setSellPrice(Double.parseDouble(sellText.getText()));
+                productDTO.setCostPrice(Integer.parseInt(costText.getText()));
+                productDTO.setSellPrice(Integer.parseInt(sellText.getText()));
                 productDTO.setBrand(brandText.getText());
                 productDTO.setUserID(userID);
 
@@ -341,6 +351,8 @@ public class ProductPage extends javax.swing.JPanel {
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter sqlFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         productDTO = new ProductDTO();
         if (nameText.getText().equals("") || costText.getText().equals("")
                 || sellText.getText().equals("") || brandText.getText().equals(""))
@@ -348,10 +360,10 @@ public class ProductPage extends javax.swing.JPanel {
         else {
             productDTO.setProdCode(codeText.getText());
             productDTO.setProdName(nameText.getText());
-            productDTO.setDate(jDateChooser1.getDateFormatString());
+            productDTO.setDate(now.format(sqlFormatter));
             productDTO.setQuantity(Integer.parseInt(quantityText.getText()));
-            productDTO.setCostPrice(Double.parseDouble(costText.getText()));
-            productDTO.setSellPrice(Double.parseDouble(sellText.getText()));
+            productDTO.setCostPrice(Integer.parseInt(costText.getText()));
+            productDTO.setSellPrice(Integer.parseInt(sellText.getText()));
             productDTO.setBrand(brandText.getText());
             productDTO.setUserID(userID);
 
@@ -381,7 +393,7 @@ public class ProductPage extends javax.swing.JPanel {
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         codeText.setText("");
         nameText.setText("");
-        jDateChooser1.setDate(null);
+        //jDateChooser1.setDate(null);
         quantityText.setText("");
         costText.setText("");
         sellText.setText("");
@@ -462,11 +474,11 @@ public class ProductPage extends javax.swing.JPanel {
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
     private javax.swing.JPanel entryPanel;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+   // private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+   // private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;

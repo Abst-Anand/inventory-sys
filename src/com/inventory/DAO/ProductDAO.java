@@ -14,6 +14,8 @@ import java.sql.*;
 import java.util.Locale;
 import java.util.Vector;
 
+import static java.lang.Integer.parseInt;
+
 /**
  *
  * @author asjad
@@ -79,26 +81,26 @@ public class ProductDAO {
         return resultSet;
     }
 
-    public Double getProdCost(String prodCode) {
-        Double costPrice = null;
+    public int getProdCost(String prodCode) {
+        int costPrice = 0;
         try {
             String query = "SELECT costprice FROM products WHERE productcode='" +prodCode+ "'";
             resultSet = statement.executeQuery(query);
             if (resultSet.next())
-                costPrice = resultSet.getDouble("costprice");
+                costPrice = resultSet.getInt("costprice");
         } catch (Exception e) {
             e.printStackTrace();
         }
         return costPrice;
     }
 
-    public Double getProdSell(String prodCode) {
-        Double sellPrice = null;
+    public int getProdSell(String prodCode) {
+        int sellPrice = 0;
         try {
             String query = "SELECT sellprice FROM products WHERE productcode='" +prodCode+ "'";
             resultSet = statement.executeQuery(query);
             if (resultSet.next())
-                sellPrice = resultSet.getDouble("sellprice");
+                sellPrice = resultSet.getInt("sellprice");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -192,6 +194,20 @@ public class ProductDAO {
 
     }
 
+    public String getProductCodeFromId(String pid){
+        try {
+            String query = "SELECT productcode FROM products WHERE pid='" +pid+ "'";
+            resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                return resultSet.getString("productcode");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
 
     // Methods to add a new product
     public void addProductDAO(ProductDTO productDTO) {
@@ -221,8 +237,8 @@ public class ProductDAO {
             prepStatement = (PreparedStatement) conn.prepareStatement(query);
             prepStatement.setString(1, productDTO.getProdCode());
             prepStatement.setString(2, productDTO.getProdName());
-            prepStatement.setDouble(3, productDTO.getCostPrice());
-            prepStatement.setDouble(4, productDTO.getSellPrice());
+            prepStatement.setInt(3, productDTO.getCostPrice());
+            prepStatement.setInt(4, productDTO.getSellPrice());
             prepStatement.setString(5, productDTO.getBrand());
 
             String query2 = "INSERT INTO currentstock VALUES(?,?)";
@@ -247,7 +263,7 @@ public class ProductDAO {
             prepStatement.setString(2, productDTO.getProdCode());
             prepStatement.setString(3, productDTO.getDate());
             prepStatement.setInt(4, productDTO.getQuantity());
-            prepStatement.setDouble(5, productDTO.getTotalCost());
+            prepStatement.setInt(5, productDTO.getTotalCost());
 
             prepStatement.executeUpdate();
             JOptionPane.showMessageDialog(null, "Purchase log added.");
@@ -289,8 +305,8 @@ public class ProductDAO {
             String query = "UPDATE products SET productname=?,costprice=?,sellprice=?,brand=? WHERE productcode=?";
             prepStatement = (PreparedStatement) conn.prepareStatement(query);
             prepStatement.setString(1, productDTO.getProdName());
-            prepStatement.setDouble(2, productDTO.getCostPrice());
-            prepStatement.setDouble(3, productDTO.getSellPrice());
+            prepStatement.setInt(2, productDTO.getCostPrice());
+            prepStatement.setInt(3, productDTO.getSellPrice());
             prepStatement.setString(4, productDTO.getBrand());
             prepStatement.setString(5, productDTO.getProdCode());
 
@@ -414,7 +430,8 @@ public class ProductDAO {
         }
     }
 
-    public boolean sellProductAndMaintainStock(String productCode, int quantity) {
+    public boolean sellProductAndMaintainStock(String pid, int quantity) {
+        String productCode = getProductCodeFromId(pid);
         String query = "Select * from currentStock where productcode='" +productCode+ "'";
         try{
             resultSet = statement.executeQuery(query);
@@ -428,8 +445,6 @@ public class ProductDAO {
                 int res = statement.executeUpdate(query2);
                 if(res == 1) return true;
             }
-
-
         }catch (SQLException e){
             e.printStackTrace();
         }

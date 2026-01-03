@@ -190,8 +190,8 @@ public class BillsPage extends javax.swing.JPanel {
             // sorting in table
             TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
             // numeric comparator example (adjust indexes to your columns)
-            sorter.setComparator(3, Comparator.comparingDouble(o -> {
-                try { return Double.parseDouble(o.toString()); } catch (Exception e) { return 0d; }
+            sorter.setComparator(3, Comparator.comparingInt(o -> {
+                try { return Integer.parseInt(o.toString()); } catch (Exception e) { return 0; }
             }));
             // datetime comparator example (adjust index)
             sorter.setComparator(2, (o1, o2) -> {
@@ -221,8 +221,8 @@ public class BillsPage extends javax.swing.JPanel {
             // sorting in table
             TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
             // numeric comparator example (adjust indexes to your columns)
-            sorter.setComparator(3, Comparator.comparingDouble(o -> {
-                try { return Double.parseDouble(o.toString()); } catch (Exception e) { return 0d; }
+            sorter.setComparator(3, Comparator.comparingInt(o -> {
+                try { return Integer.parseInt(o.toString()); } catch (Exception e) { return 0; }
             }));
             // datetime comparator example (adjust index)
             sorter.setComparator(2, (o1, o2) -> {

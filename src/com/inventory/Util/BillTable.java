@@ -140,8 +140,11 @@ public class BillTable extends JFrame {
         // ---------- BOTTOM PANEL ----------
         JPanel bottomPanel = new JPanel(new BorderLayout());
 
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
-        String amount = formatter.format(billItems.get(0).getNetTotal());
+
+        String amount = CurrencyFormatter.format(String.valueOf(billItems.get(0).getNetTotal()));
+
+        System.out.println(billItems.get(0).getNetTotal());
+        System.out.println(amount);
 
         JLabel totalLabel = new JLabel("Gross Total: " + amount);
         totalLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -192,7 +195,7 @@ public class BillTable extends JFrame {
             ResultSet resultSet = billsDAO.getBillItemsByBillId(billId);
 
             while (resultSet.next()) {
-                BillItemDTO billItem = new BillItemDTO(billId, resultSet.getString("productname"), resultSet.getInt("quantity"), resultSet.getFloat("price"), resultSet.getFloat("total_amount"), resultSet.getString("fullname"), resultSet.getString("bill_date"));
+                BillItemDTO billItem = new BillItemDTO(billId, resultSet.getString("productname"), resultSet.getInt("quantity"), resultSet.getInt("price"), resultSet.getInt("total_amount"), resultSet.getString("fullname"), resultSet.getString("bill_date"));
                 billItems.add(billItem);
             }
 

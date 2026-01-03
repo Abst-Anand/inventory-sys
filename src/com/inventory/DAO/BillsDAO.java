@@ -26,13 +26,13 @@ public class BillsDAO {
     }
 
     // Add Bill
-    public String createNewBill(String customerId, double totalPrice) {
+    public String createNewBill(String customerId, int totalPrice) {
         String newBillId = "";
         try {
             String query = "INSERT INTO bills(cid, total_amount) VALUES(?,?)";
             prepStatement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             prepStatement.setString(1, customerId);
-            prepStatement.setDouble(2, totalPrice);
+            prepStatement.setInt(2, totalPrice);
             prepStatement.executeUpdate();
             ResultSet rs = prepStatement.getGeneratedKeys();
             if (rs.next()) {
@@ -53,7 +53,7 @@ public class BillsDAO {
             prepStatement.setInt(1, Integer.parseInt(billId));
             prepStatement.setInt(2, Integer.parseInt(itemDetailsDTO.getProductId()));
             prepStatement.setInt(3, itemDetailsDTO.getQuantity());
-            prepStatement.setDouble(4, itemDetailsDTO.getUnitPrice());
+            prepStatement.setInt(4, itemDetailsDTO.getUnitPrice());
             System.out.println("Query: " + prepStatement.toString());
             prepStatement.executeUpdate();
         }catch (SQLException e) {

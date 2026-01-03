@@ -8,7 +8,6 @@ package com.inventory.UI;
 import com.inventory.DAO.BillsDAO;
 import com.inventory.DAO.CustomerDAO;
 import com.inventory.DAO.ProductDAO;
-import com.inventory.DTO.BillItemDTO;
 import com.inventory.DTO.ProductDTO;
 import com.inventory.DTO.BillsDTO;
 import com.inventory.Util.PdfExporter;
@@ -88,7 +87,7 @@ public class SalesPage extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
 
         // === NEW UI bits for multi-products ===
-        JLabel productsHeaderLabel = new JLabel("Products (Code, Price, Quantity):");
+        JLabel productsHeaderLabel = new JLabel("Products (Name, Price, Quantity):");
         itemsPanel = new JPanel();
         itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
         itemsScrollPane = new JScrollPane(itemsPanel);
@@ -388,10 +387,9 @@ public class SalesPage extends javax.swing.JPanel {
                 ProductDTO productDTO = new ProductDTO();
                 CustomerDAO customerDAO = new CustomerDAO();
                 ProductDAO productDAO = new ProductDAO();
-                System.out.println(custCodeText.getText().trim());
                 productDTO.setCustCode(customerCode);
 //                productDTO.setDate(jDateChooser1.getDate().toString());
-                double totalRevenue = 0.0;
+                int totalRevenue = 0;
 
                 boolean flag = false;
                 for(BillsDTO item: billItems){
@@ -399,7 +397,7 @@ public class SalesPage extends javax.swing.JPanel {
                     productDTO.setProdCode(item.getProductCode());
                     productDTO.setQuantity(item.getQuantity());
                     productDTO.setTotalRevenue(totalRevenue);
-                    flag = productDAO.sellProductAndMaintainStock(item.getProductCode(), item.getQuantity());
+                    flag = productDAO.sellProductAndMaintainStock(item.getProductId(), item.getQuantity());
                     if(!flag){
                         JOptionPane.showMessageDialog(null, "Stock not available for item(s) in this sale please verify and Try Again");
                         return;
@@ -471,7 +469,7 @@ public class SalesPage extends javax.swing.JPanel {
             TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
             // Set numeric comparators for the appropriate columns
             sorter.setComparator(3, Comparator.comparingInt(o -> Integer.parseInt(o.toString()))); // Quantity
-            sorter.setComparator(4, Comparator.comparingDouble(o -> Double.parseDouble(o.toString()))); // Revenue
+            sorter.setComparator(4, Comparator.comparingInt(o -> Integer.parseInt(o.toString()))); // Revenue
             sorter.setComparator(5, (o1, o2) -> { //datetime
                 SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
                 try {
@@ -500,7 +498,7 @@ public class SalesPage extends javax.swing.JPanel {
             TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
             // Set numeric comparators for the appropriate columns
             sorter.setComparator(3, Comparator.comparingInt(o -> Integer.parseInt(o.toString()))); // Quantity
-            sorter.setComparator(4, Comparator.comparingDouble(o -> Double.parseDouble(o.toString()))); // Revenue
+            sorter.setComparator(4, Comparator.comparingInt(o -> Integer.parseInt(o.toString()))); // Revenue
             sorter.setComparator(5, (o1, o2) -> { //datetime
                 SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
                 try {
@@ -528,7 +526,7 @@ public class SalesPage extends javax.swing.JPanel {
 
     // === Per-row UI for (Product Code, Quantity) ===
     private class ProductRow extends JPanel {
-        JTextField prodCodeField = new JTextField(0);
+        JTextField prodNameField = new JTextField(0);
         JTextField priceField = new JTextField(0);
         JTextField quantityField = new JTextField(0);
         JLabel infoLabel = new JLabel(" ");
@@ -543,9 +541,9 @@ public class SalesPage extends javax.swing.JPanel {
 
             // Product Code
             gc.gridx = 0;
-            add(new JLabel("Code:"), gc);
+            add(new JLabel("Name:"), gc);
             gc.gridx = 1;
-            add(prodCodeField, gc);
+            add(prodNameField, gc);
 
             // Price
             gc.gridx = 2;
@@ -565,10 +563,10 @@ public class SalesPage extends javax.swing.JPanel {
             add(infoLabel, gc);
 
             // Auto-fill product name/available qty and price on code typing
-            prodCodeField.addKeyListener(new KeyAdapter() {
+            prodNameField.addKeyListener(new KeyAdapter() {
                 @Override
                 public void keyReleased(KeyEvent e) {
-                    String code = prodCodeField.getText().trim();
+                    String code = prodNameField.getText().trim();
                     if (code.isEmpty()) {
                         infoLabel.setText(" ");
                         priceField.setText("");
@@ -581,9 +579,9 @@ public class SalesPage extends javax.swing.JPanel {
                             String avail = rs.getString("quantity");
                             prodId = rs.getString("pid");
                             infoLabel.setText("Name: " + nm + " | Available: " + avail);
-                            Double sellPrice = new ProductDAO().getProdSell(code);
+                            Integer sellPrice = new ProductDAO().getProdSell(rs.getString("productcode"));
                             priceField.setText(sellPrice != null ? sellPrice.toString() : "");
-                            priceField.setEditable(false);
+                            priceField.setEditable(true);
                         } else {
                             infoLabel.setText("||   Product doesn't exist in Inventory.  ||");
                             priceField.setText("");
@@ -598,8 +596,8 @@ public class SalesPage extends javax.swing.JPanel {
             quantityField.addFocusListener(new java.awt.event.FocusAdapter(){
                 @Override
                 public void focusLost(java.awt.event.FocusEvent evt) {
-                    String pCode = prodCodeField.getText().trim();
-                    double price = Double.parseDouble(priceField.getText().trim());
+                    String pCode = prodNameField.getText().trim();
+                    int price = Integer.parseInt(priceField.getText().trim());
                     int qty = Integer.parseInt(quantityField.getText().trim());
                     String custId = custIdText.getText().trim();
 
@@ -608,7 +606,7 @@ public class SalesPage extends javax.swing.JPanel {
                     System.out.println(Arrays.toString(billItems.toArray()));
                 }
             });
-
+            quantityField.addActionListener(e -> addProductRow());
 
         }
     }

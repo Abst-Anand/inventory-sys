@@ -15,8 +15,8 @@ package com.inventory.DTO;
 public class ProductDTO {
 
     private int prodID, quantity, userID;
-    private double costPrice, sellPrice;
-    private Double totalCost, totalRevenue;
+    private int costPrice, sellPrice;
+    private int totalCost, totalRevenue;
     private String prodCode, prodName, date, suppCode, custCode, custName, brand;
 
     public int getProdID() {
@@ -43,35 +43,35 @@ public class ProductDTO {
         this.userID = userID;
     }
 
-    public double getCostPrice() {
+    public int getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(double costPrice) {
+    public void setCostPrice(int costPrice) {
         this.costPrice = costPrice;
     }
 
-    public double getSellPrice() {
+    public int getSellPrice() {
         return sellPrice;
     }
 
-    public void setSellPrice(double sellPrice) {
+    public void setSellPrice(int sellPrice) {
         this.sellPrice = sellPrice;
     }
 
-    public Double getTotalCost() {
+    public int getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(Double totalCost) {
+    public void setTotalCost(int totalCost) {
         this.totalCost = totalCost;
     }
 
-    public Double getTotalRevenue() {
+    public int getTotalRevenue() {
         return totalRevenue;
     }
 
-    public void setTotalRevenue(Double totalRevenue) {
+    public void setTotalRevenue(int totalRevenue) {
         this.totalRevenue = totalRevenue;
     }
 

@@ -167,12 +167,25 @@ public class CustomerDAO {
         return resultSet;
     }
 
+    public String getProductcodeFromProductName(String prodName){
+        try{
+            String query ="select productcode from products where productname='"+prodName+"'";
+            resultSet = statement.executeQuery(query);
+            if (resultSet.next()){
+                return resultSet.getString("productcode");
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    public ResultSet getProdName(String prodName) {
 
-    public ResultSet getProdName(String prodCode) {
         try {
-            String query = "SELECT pid,productname,currentstock.quantity FROM products " +
-                    "INNER JOIN currentstock ON products.productcode=currentstock.productcode " +
+            String prodCode = getProductcodeFromProductName(prodName);
+            String query = "SELECT pid,productname,currentstock.quantity ,currentstock.productcode FROM products " +
+                    "INNER JOIN currentstock ON products.productcode = currentstock.productcode " +
                     "WHERE currentstock.productcode='" +prodCode+ "'";
             resultSet = statement.executeQuery(query);
         } catch (SQLException e) {
