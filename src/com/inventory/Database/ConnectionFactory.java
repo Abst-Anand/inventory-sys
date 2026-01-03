@@ -24,8 +24,9 @@ import java.util.Properties;
 //Class to retrieve connection for database and login verification.
 public class ConnectionFactory {
 
+    static final String DB_SERVER_PORT = "3306";
     static final String driver = "com.mysql.cj.jdbc.Driver";
-    static final String url = "jdbc:mysql://127.0.0.1:9000/inventory?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    static final String url = "jdbc:mysql://127.0.0.1:"+ DB_SERVER_PORT +"/inventory?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     static String username;
     static String password;
 
