@@ -4,7 +4,7 @@ public class BillsDTO {
     String productId;
     String customerId;
     int quantity;
-    double unitPrice;
+    int unitPrice;
     String productCode;
 
     public BillsDTO() {}
@@ -17,7 +17,7 @@ public class BillsDTO {
         this.productCode = productCode;
     }
 
-    public BillsDTO(String productId, String customerId, int quantity, double unitPrice, String productCode) {
+    public BillsDTO(String productId, String customerId, int quantity, int unitPrice, String productCode) {
         this.productId = productId;
         this.customerId = customerId;
         this.quantity = quantity;
@@ -49,11 +49,11 @@ public class BillsDTO {
         this.quantity = quantity;
     }
 
-    public double getUnitPrice() {
+    public int getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
+    public void setUnitPrice(int unitPrice) {
         this.unitPrice = unitPrice;
     }
 

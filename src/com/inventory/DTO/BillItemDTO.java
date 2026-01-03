@@ -5,15 +5,15 @@ public class BillItemDTO {
     private static int billId;
     private String productName;
     private int quantity;
-    private double price;
-    private double total;
+    private int price;
+    private int total;
     private static String customerName;
-    private double netTotal = 0.0;
+    private int netTotal = 0;
     private static String billDate;
 
     public BillItemDTO(){}
 
-    public BillItemDTO(int _billId, String _productName, int _quantity, double _price, double _netTotal, String _customerName, String _billDate) {
+    public BillItemDTO(int _billId, String _productName, int _quantity, int _price, int _netTotal, String _customerName, String _billDate) {
         billId = _billId;
         productName = _productName;
         quantity = _quantity;
@@ -24,7 +24,7 @@ public class BillItemDTO {
         billDate = _billDate;
     }
 
-    public BillItemDTO(int _productId, double _price, int _customerId, int _quantity,String _billDate) {
+    public BillItemDTO(int _productId, int _price, int _customerId, int _quantity,String _billDate) {
         productId = _productId;
         price = _price;
         quantity = _quantity;
@@ -34,47 +34,78 @@ public class BillItemDTO {
     }
 
     // Getters and Setters
-    public int getProductId() { return productId; }
-    public void setProductId(int productId) { this.productId = productId; }
 
-    public String getBillDate() {
-        return billDate;
+
+    public int getProductId() {
+        return productId;
     }
 
-    public void setBillDate(String billDate) {
-        BillItemDTO.billDate = billDate;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
-    public int getBillId() { return billId; }
-    public void setBillId(int billId) { this.billId = billId; }
+    public static int getBillId() {
+        return billId;
+    }
 
-    public String getProductName() { return productName; }
-    public void setProductName(String productName) { this.productName = productName; }
+    public static void setBillId(int billId) {
+        BillItemDTO.billId = billId;
+    }
 
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public String getProductName() {
+        return productName;
+    }
 
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
-    public double getTotal() { return total; }
-    public void setTotal(double total) { this.total = total; }
+    public int getQuantity() {
+        return quantity;
+    }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
-    public String getCustomerName() {
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public static String getCustomerName() {
         return customerName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public static void setCustomerName(String customerName) {
+        BillItemDTO.customerName = customerName;
     }
 
-    public double getNetTotal() {
+    public int getNetTotal() {
         return netTotal;
     }
 
-    public void setNetTotal(double netTotal) {
+    public void setNetTotal(int netTotal) {
         this.netTotal = netTotal;
+    }
+
+    public static String getBillDate() {
+        return billDate;
+    }
+
+    public static void setBillDate(String billDate) {
+        BillItemDTO.billDate = billDate;
     }
 
     @Override

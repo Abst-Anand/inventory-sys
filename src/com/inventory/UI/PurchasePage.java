@@ -357,10 +357,9 @@ public class PurchasePage extends javax.swing.JPanel {
                     //productDTO.setCostPrice(Double.parseDouble(costText.getText()));
                     //productDTO.setSellPrice(Double.parseDouble(sellText.getText()));
                     //productDTO.setBrand(brandText.getText());
-                    Double costPrice = Double.parseDouble(costText.getText());
-                    Double totalCost = costPrice * Integer.parseInt(quantityText.getText());
+                    int costPrice = Integer.parseInt(costText.getText());
+                    int totalCost = costPrice * Integer.parseInt(quantityText.getText());
                     productDTO.setTotalCost(totalCost);
-
                     new ProductDAO().addPurchaseDAO(productDTO);
                     loadDataSet();
                 } else
