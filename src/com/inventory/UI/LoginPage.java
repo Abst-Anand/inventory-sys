@@ -9,10 +9,9 @@ package com.inventory.UI;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialDarkerIJTheme;
 import com.inventory.DTO.UserDTO;
 import com.inventory.Database.ConnectionFactory;
+import com.inventory.UI.central.style.UITheme;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +44,14 @@ public class LoginPage extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        themeToggle = new JToggleButton();
+        themeToggle.setFocusPainted(false);
+        themeToggle.setText(UITheme.isDark() ? "\u25CF Light" : "\u25CF Dark");
+        themeToggle.setSelected(UITheme.isDark());
+
+        themeToggle.addActionListener(e -> toggleTheme());
+
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -99,6 +106,15 @@ public class LoginPage extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGap(0, 0, Short.MAX_VALUE)
+
+                    .addComponent(themeToggle, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                            .addGap(47, 47, 47)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)))
             .addGroup(layout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -121,6 +137,11 @@ public class LoginPage extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(themeToggle, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(10, 10, 10)
+                            .addGroup(layout.createSequentialGroup()))
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -146,7 +167,16 @@ public class LoginPage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    private void toggleTheme() {
+        boolean isDark = themeToggle.isSelected();
+
+        UITheme.applyTheme(isDark);
+
+        SwingUtilities.updateComponentTreeUI(this);
+
+        themeToggle.setText(isDark ? "\u25CF Light" : "\u25CF Dark");
+    }
+
     //Password Encryption
     private String encryptPass(String pass){
         if(pass == null) return null;
@@ -192,6 +222,9 @@ public class LoginPage extends javax.swing.JFrame {
     public static void main(String[] args) {
         // setting UI theme and LookAndFeel of the application
         try {
+            UITheme.applySavedTheme();   // ✔ applies last selected theme
+            UITheme.setGlobalFont(12);
+
             javax.swing.UIManager.setLookAndFeel(new FlatMaterialDarkerIJTheme());
             } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
@@ -214,5 +247,7 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField passText;
     private javax.swing.JTextField userText;
+    private JToggleButton themeToggle;
+
     // End of variables declaration//GEN-END:variables
 }
