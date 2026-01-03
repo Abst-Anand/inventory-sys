@@ -23,6 +23,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 import java.util.Date;
@@ -384,11 +387,16 @@ public class SalesPage extends javax.swing.JPanel {
 
             // Build DTO and call DAO like original logic
             try {
+                // get system date with required format (ex : Thu Oct 02 23:31:45 IST 2025)
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy");
+                ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+                String formattedDate = now.format(formatter);
+
                 ProductDTO productDTO = new ProductDTO();
                 CustomerDAO customerDAO = new CustomerDAO();
                 ProductDAO productDAO = new ProductDAO();
                 productDTO.setCustCode(customerCode);
-//                productDTO.setDate(jDateChooser1.getDate().toString());
+                productDTO.setDate(formattedDate);
                 int totalRevenue = 0;
 
                 boolean flag = false;
